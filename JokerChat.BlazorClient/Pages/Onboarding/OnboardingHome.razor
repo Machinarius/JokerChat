@@ -1,0 +1,44 @@
+﻿@page "/"
+
+@using JokerChat.BlazorClient.ClientCode.Onboarding
+@inherits OnboardingHomeBase
+
+@if (!DataLoaded) { 
+    <h1>Loading data...</h1>
+} else {
+    <h1>Welcome to JokerChat!</h1>
+    <h3>Choose a Username</h3>
+    <input type="text" @bind="@DesiredUsername"/>
+    <button @onclick="ValidateUsername">Continue</button>
+
+    if (UsernameErrors != null) {
+        <ul>
+        @foreach (var error in UsernameErrors) {
+            <li>@error</li>    
+        }
+        </ul>
+    }
+}
+
+@code {     
+    public bool DataLoaded { get; set; }
+
+    protected override void ShowOnboardingExperienceUI() {
+        DataLoaded = true;
+        StateHasChanged();
+    }
+
+    public string DesiredUsername { get; set; }
+    public IEnumerable<string> UsernameErrors { get; set; }
+
+    public void ValidateUsername() {
+        if (!TryToCreateUser(DesiredUsername, out var errors)) {
+            UsernameErrors = errors;
+            StateHasChanged();
+        } else {
+            UsernameErrors = null;
+            DataLoaded = false;
+            StateHasChanged();
+        }
+    }
+}
