@@ -1,0 +1,11 @@
+﻿@using JokerChat.BlazorClient.Models;
+
+<div class="message-box">
+    <p class="message-sender">@MessageToDisplay.SenderName <span class="message-date">@MessageToDisplay.DateSent.ToLocalTime()</span></p>
+    <p class="message-content">@MessageToDisplay.Content</p>
+</div>
+
+@code {
+    [Parameter]
+    public JokerMessage MessageToDisplay { get; set; }
+}

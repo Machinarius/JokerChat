@@ -1,9 +1,22 @@
 @using JokerChat.BlazorClient.ClientCode.ChatExperience
 @inherits ConversationViewBase
 
+<div class="messages-list">
+    @foreach(var message in MessagesToDisplay)
+    {
+        <MessageView MessageToDisplay="message"></MessageView>
+    }
+</div>
+<div class="messages-input-container">
+    <input type="text" />
+</div>
+
 @code {
     [Parameter]
     public string ConversationId { get; set; }
 
-
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+        await InitializeWithConversationIdAsync(ConversationId);
+    }
 }

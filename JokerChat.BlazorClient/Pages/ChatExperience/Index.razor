@@ -1,9 +1,8 @@
-﻿@page "/chat/{conversationId:string}"
+﻿@page "/chat/{conversationId}"
 
+<ConversationView ConversationId="@ConversationId"></ConversationView>
 
 @code {
     [Parameter]
     public string ConversationId { get; set; } 
-
-
 }

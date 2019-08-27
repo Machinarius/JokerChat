@@ -22,7 +22,7 @@ namespace JokerChat.BlazorClient.ClientCode.Onboarding {
     }
 
     private void ContinueToChatExperience() {
-      _uriHelper.NavigateTo("/chat/channel/general");
+      _uriHelper.NavigateTo("/chat/general");
     }
 
     protected abstract void ShowOnboardingExperienceUI();
