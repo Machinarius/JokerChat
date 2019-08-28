@@ -23,7 +23,7 @@ export default class SignalRBackend {
         
         var tokenString = JSON.stringify(this._announcementToken);
         this._connection = new SignalR.HubConnectionBuilder()
-            .withUrl("https://localhost:44345/jokerhub", {
+            .withUrl("http://localhost:44345/jokerhub", {
                 accessTokenFactory: () => tokenString
             })
             .build();

@@ -1,4 +1,5 @@
 import JokerMessage from "../models/JokerMessage";
+import Axios, { AxiosInstance } from "axios"
 
 interface StreamSubscription {
     ReceiverFunc: (message: JokerMessage) => void;
@@ -9,9 +10,13 @@ export default class ConversationStream {
     private _conversationId: string;
     private _subscriptions: StreamSubscription[] = [];
     private _subsPointer: number = 0;
+    private _httpClient: AxiosInstance;
 
     constructor(conversationId: string) {
         this._conversationId = conversationId;        
+        this._httpClient = Axios.create({
+            baseURL: "http://localhost:2205"
+        });
     }
 
     public get ConversationId(): string {
@@ -30,8 +35,8 @@ export default class ConversationStream {
         return handle;
     }
 
-    public sendMessage(message: JokerMessage) {
-        
+    public async sendMessage(message: JokerMessage) : Promise<void> {
+        await this._httpClient.post("/Messages/SendMessage", message);
     }
 
     public receiveMessage(message: JokerMessage) {

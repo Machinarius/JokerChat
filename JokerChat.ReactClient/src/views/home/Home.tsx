@@ -67,7 +67,12 @@ export default class HomeComponent extends Component<{}, HomeState> {
 
     private async connectToServer(identity: JokerIdentity) {
         var streamsManager = new StreamsManager(identity);
-        await streamsManager.initialize();
+        
+        try {
+            await streamsManager.initialize();
+        } catch(error) {
+            console.error(error);
+        }
 
         this.setState({
             ConnectingToServer: false,
