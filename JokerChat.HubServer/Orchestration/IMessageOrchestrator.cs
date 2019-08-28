@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace JokerChat.HubServer.Orchestration {
-  public interface IMessageReceptionOrchestrator {
+  public interface IMessageOrchestrator {
     Task ReceiveMessageAsync(JokerMessage message);
   }
 }

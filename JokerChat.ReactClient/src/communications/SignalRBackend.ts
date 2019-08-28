@@ -1,5 +1,6 @@
-import JokerIdentity from "../models/JokerIdentity"
-import JokerMessage from "../models/JokerMessage"
+import JokerIdentity from "../models/JokerIdentity";
+import JokerMessage from "../models/JokerMessage";
+import UUID from "uuid/v4";
 
 import * as SignalR from "@aspnet/signalr"
 
@@ -9,7 +10,11 @@ interface SignalRHandlers {
 
 export default class SignalRBackend {
     private _connection: SignalR.HubConnection;
-    private _announcementToken: { userId: string, username: string};
+    private _announcementToken: { 
+        userId: string, 
+        username: string,
+        sessionId: string
+    };
     private _handlers: SignalRHandlers;
 
     constructor(
@@ -17,7 +22,8 @@ export default class SignalRBackend {
         handlers: SignalRHandlers) {
         this._announcementToken = {
             userId: identity.Id,
-            username: identity.Username
+            username: identity.Username,
+            sessionId: UUID()
         };
         this._handlers = handlers;
         
@@ -27,9 +33,9 @@ export default class SignalRBackend {
                 accessTokenFactory: () => tokenString
             })
             .build();
-        this._connection.on("receiveMessage", this.onReceiveMessage);
-
+            
         this.onReceiveMessage = this.onReceiveMessage.bind(this);
+        this._connection.on("receiveMessage", this.onReceiveMessage);
     }
 
     public async connectToServerAsync() : Promise<void> {
@@ -45,12 +51,12 @@ export default class SignalRBackend {
     }
 
     private onReceiveMessage(messagePayload: any) {
-        var id = messagePayload.Id as string;
-        var senderId = messagePayload.SenderId as string;
-        var senderUsername = messagePayload.SenderUsername as string;
-        var content = messagePayload.Content as string;
-        var dateValue = messagePayload.Date as string;
-        var conversationId = messagePayload.ConversationId as string;
+        var id = messagePayload.id as string;
+        var senderId = messagePayload.senderId as string;
+        var senderUsername = messagePayload.senderUsername as string;
+        var content = messagePayload.content as string;
+        var dateValue = messagePayload.dateSent as string;
+        var conversationId = messagePayload.conversationId as string;
         var date = new Date(Date.parse(dateValue));
 
         var messageObject = new JokerMessage(content, conversationId, {

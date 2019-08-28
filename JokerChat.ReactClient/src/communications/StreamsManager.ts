@@ -9,12 +9,12 @@ export default class StreamsManager {
     private _initialized: boolean = false;
 
     constructor(identity: JokerIdentity) {
+        this.onMessageReceived = this.onMessageReceived.bind(this);
+
         this._streams = {};
         this._backend = new SignalRBackend(identity, {
             OnMessageReceived: this.onMessageReceived
         });
-        
-        this.onMessageReceived = this.onMessageReceived.bind(this);
     }
 
     public async initialize() : Promise<void> {

@@ -1,4 +1,5 @@
 using JokerChat.Endpoint.ClientCommands;
+using JokerChat.Endpoint.HubCommands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,10 @@ namespace JokerChat.Endpoint {
       services.AddCors(options => {
         options.AddDefaultPolicy(BuildCORSPolicy);
       });
+
+      services.Configure<EndpointConfiguration>(Configuration.GetSection("EndpointConfiguration"));
+
+      services.AddJokerHubCommandServices();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
