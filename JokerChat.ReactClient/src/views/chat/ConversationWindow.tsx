@@ -7,7 +7,7 @@ import MessageRow from "./MessageRow";
 import React, { Component } from "react";
 
 interface ConversationWindowProps {
-    ConversationId: string;
+    ConversationStream: ConversationStream;
     Identity: JokerIdentity;
 }
 
@@ -22,11 +22,9 @@ export default class ConversationWindow extends Component<ConversationWindowProp
 
     constructor(props: ConversationWindowProps) {
         super(props);
-        this._convStream = new ConversationStream(props.ConversationId);
+        this._convStream = this.props.ConversationStream;
 
         this.onMessageReceived = this.onMessageReceived.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.onSendMessageClicked = this.onSendMessageClicked.bind(this);
         this.onComposedMessageChanged = this.onComposedMessageChanged.bind(this);
         this.state = {
@@ -46,14 +44,6 @@ export default class ConversationWindow extends Component<ConversationWindowProp
         });
     }
 
-    public componentDidMount() {
-        this._convStream.connectToServer();
-    }
-
-    public componentWillUnmount() {
-
-    }
-
     public onComposedMessageChanged(event: any) {
         this.setState({
             ComposedMessage: event.target.value
@@ -65,7 +55,7 @@ export default class ConversationWindow extends Component<ConversationWindowProp
             return;
         }
 
-        var message = new JokerMessage(this.state.ComposedMessage, this.props.Identity);
+        var message = new JokerMessage(this.state.ComposedMessage, this._convStream.ConversationId, this.props.Identity);
         this._convStream.sendMessage(message);
         this.setState({
             ComposedMessage: ""
@@ -86,7 +76,7 @@ export default class ConversationWindow extends Component<ConversationWindowProp
 
         return (
             <div>
-                {this.props.ConversationId}
+                {this._convStream.ConversationId}
                 <input type="text" value={this.state.ComposedMessage} onChange={this.onComposedMessageChanged}/>
                 <button onClick={this.onSendMessageClicked}>Send message</button>
                 <div>

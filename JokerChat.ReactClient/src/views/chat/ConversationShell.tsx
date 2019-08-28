@@ -4,9 +4,11 @@ import IdentityStore from "../../storage/IdentityStore";
 import React, { Component } from "react";
 import ConversationsList from "./ConversationsList";
 import ConversationWindow from "./ConversationWindow";
+import StreamsManager from "../../communications/StreamsManager";
 
 interface ConversationShellProps {
-    Identity: JokerIdentity
+    Identity: JokerIdentity;
+    StreamsManager: StreamsManager;
 }
 
 interface ConversationShellState {
@@ -33,6 +35,8 @@ export default class ConversationShell extends Component<ConversationShellProps,
     }
 
     public render() {
+        var convStream = this.props.StreamsManager.getConversationStream(this.state.CurrentConversationId);
+
         return (
             <div>
                 <ConversationsList 
@@ -41,7 +45,7 @@ export default class ConversationShell extends Component<ConversationShellProps,
                 </ConversationsList>
                 <ConversationWindow
                     Identity={this.props.Identity}
-                    ConversationId={this.state.CurrentConversationId}>
+                    ConversationStream={convStream}>
                 </ConversationWindow>
             </div>
         )

@@ -11,11 +11,11 @@ export default class ConversationStream {
     private _subsPointer: number = 0;
 
     constructor(conversationId: string) {
-        this._conversationId = conversationId;
+        this._conversationId = conversationId;        
     }
 
-    public connectToServer() {
-        //this.beginDummyMessageStream();
+    public get ConversationId(): string {
+        return this._conversationId;
     }
 
     public subscribe(receiverFunc: (message: JokerMessage) => void): number {
@@ -31,27 +31,12 @@ export default class ConversationStream {
     }
 
     public sendMessage(message: JokerMessage) {
+        
+    }
+
+    public receiveMessage(message: JokerMessage) {
         this._subscriptions.forEach(subscription => {
             subscription.ReceiverFunc(message);
         });
     }
-
-    /*
-    private beginDummyMessageStream() {
-        this.sendDummyMessage = this.sendDummyMessage.bind(this);
-        setTimeout(this.sendDummyMessage, 1500);
-    }
-
-    private sendDummyMessage() {
-        var dummyMessage = new JokerMessage();
-        dummyMessage.Content = "Dummy debug message";
-        dummyMessage.Id = "DummyId";
-        dummyMessage.SenderId = "Dummy";
-        dummyMessage.SenderUsername = "DummyUser";
-        dummyMessage.DateSent = new Date();
-        this.sendMessage(dummyMessage);
-
-        setTimeout(this.sendDummyMessage, 1500);
-    }
-    */
 }
