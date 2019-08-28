@@ -72,6 +72,7 @@ export default class HomeComponent extends Component<{}, HomeState> {
             await streamsManager.initialize();
         } catch(error) {
             console.error(error);
+            return;
         }
 
         this.setState({

@@ -15,7 +15,7 @@ export default class ConversationStream {
     constructor(conversationId: string) {
         this._conversationId = conversationId;        
         this._httpClient = Axios.create({
-            baseURL: "http://localhost:2205"
+            baseURL: "http://localhost:2205/"
         });
     }
 

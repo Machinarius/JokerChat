@@ -7,7 +7,7 @@ namespace JokerChat.Endpoint.ClientCommands {
     public string GetUserId(HubConnectionContext connection) {
       string authJson = null;
       var request = connection.GetHttpContext().Request;
-      if (request.Headers.TryGetValue("Authentication", out var authHeaderValue)) {
+      if (request.Headers.TryGetValue("Authorization", out var authHeaderValue)) {
         authJson = authHeaderValue.ToString();
       } else {
         var queryStringAuth = request.Query["access_token"].ToString();
