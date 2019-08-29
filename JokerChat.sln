@@ -10,9 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2CD468FD-3638-4ABD-AEC0-A75956C0C884}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		debug-compose.yml = debug-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokerChat.Common", "JokerChat.Common\JokerChat.Common.csproj", "{084319B6-D5D1-486B-BFCC-44A75D64A02F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JokerChat.Common", "JokerChat.Common\JokerChat.Common.csproj", "{084319B6-D5D1-486B-BFCC-44A75D64A02F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
+RUN ls .
 COPY ["JokerChat.Endpoint/JokerChat.Endpoint.csproj", "JokerChat.Endpoint/"]
 COPY ["JokerChat.Common/JokerChat.Common.csproj", "JokerChat.Common/"]
 RUN dotnet restore "JokerChat.Endpoint/JokerChat.Endpoint.csproj"

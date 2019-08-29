@@ -1,0 +1,4 @@
+{
+    "EndpointUrl": "http://localhost:3522/jokerhub",
+    "HubUrl": "http://localhost:3521/"
+}

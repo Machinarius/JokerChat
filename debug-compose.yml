@@ -1,0 +1,36 @@
+version: '3'
+services:
+    hub:
+        build: 
+            context: .
+            dockerfile: ./JokerChat.HubServer/Dockerfile
+        ports:
+            - "3521:3521"
+        links:
+            - redis
+        environment:
+            ASPNETCORE_URLS: http://0.0.0.0:3521
+            ASPNETCORE_ENVIRONMENT: Compose
+    endpoint:
+        build: 
+            context: .
+            dockerfile: ./JokerChat.Endpoint/Dockerfile
+        ports:
+            - "3522:3522"
+        links:
+            - hub
+        environment:
+            ASPNETCORE_URLS: http://0.0.0.0:3522
+            ASPNETCORE_ENVIRONMENT: Compose
+    client:
+        build: 
+            context: ./JokerChat.ReactClient
+            args:
+                ENVIRONMENT: Compose
+        ports:
+            - "3523:80"
+        
+    redis:
+        image: "redis:alpine"
+        ports:
+            - "6379:6379"
