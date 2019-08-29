@@ -1,7 +1,8 @@
 import JokerIdentity from "../models/JokerIdentity";
 import JokerMessage from "../models/JokerMessage";
-import UUID from "uuid/v4";
+import * as Configuration from "../configuration.json"
 
+import UUID from "uuid/v4";
 import * as SignalR from "@aspnet/signalr"
 
 interface SignalRHandlers {
@@ -29,7 +30,7 @@ export default class SignalRBackend {
         
         var tokenString = JSON.stringify(this._announcementToken);
         this._connection = new SignalR.HubConnectionBuilder()
-            .withUrl("http://localhost:32460/jokerhub", {
+            .withUrl(Configuration.EndpointUrl, {
                 accessTokenFactory: () => tokenString
             })
             .build();

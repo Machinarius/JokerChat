@@ -1,4 +1,6 @@
 import JokerMessage from "../models/JokerMessage";
+import * as Configuration from "../configuration.json"
+
 import Axios, { AxiosInstance } from "axios"
 
 interface StreamSubscription {
@@ -17,7 +19,7 @@ export default class ConversationStream {
         this._conversationId = conversationId;        
         this._userId = userId;
         this._httpClient = Axios.create({
-            baseURL: "http://localhost:2205/"
+            baseURL: Configuration.HubUrl
         });
     }
 
