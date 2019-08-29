@@ -1,5 +1,6 @@
 using JokerChat.HubServer.Orchestration;
 using JokerChat.HubServer.Registrations;
+using JokerChat.HubServer.Subscriptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -30,6 +31,7 @@ namespace JokerChat.HubServer {
 
       services.AddJokerRegistrationServices();
       services.AddJokerOrchestrationServices();
+      services.AddJokerSubscriptionServices();
 
       services.Configure<ServicesConfiguration>(Configuration.GetSection("Services"));
     }

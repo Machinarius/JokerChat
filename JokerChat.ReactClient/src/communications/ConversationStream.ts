@@ -11,9 +11,11 @@ export default class ConversationStream {
     private _subscriptions: StreamSubscription[] = [];
     private _subsPointer: number = 0;
     private _httpClient: AxiosInstance;
+    private _userId: string;
 
-    constructor(conversationId: string) {
+    constructor(conversationId: string, userId: string) {
         this._conversationId = conversationId;        
+        this._userId = userId;
         this._httpClient = Axios.create({
             baseURL: "http://localhost:2205/"
         });
@@ -21,6 +23,15 @@ export default class ConversationStream {
 
     public get ConversationId(): string {
         return this._conversationId;
+    }
+
+    public async connectToServer() {
+        await this._httpClient.post("/Subscriptions/SubscribeToConversation", null, {
+            params: {
+                conversationId: this._conversationId,
+                userId: this._userId
+            }
+        });
     }
 
     public subscribe(receiverFunc: (message: JokerMessage) => void): number {

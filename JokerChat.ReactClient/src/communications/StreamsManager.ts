@@ -7,10 +7,12 @@ export default class StreamsManager {
     private _streams: { [conversationId: string] : ConversationStream };
     private _backend: SignalRBackend;
     private _initialized: boolean = false;
+    private _identity: JokerIdentity;
 
     constructor(identity: JokerIdentity) {
         this.onMessageReceived = this.onMessageReceived.bind(this);
 
+        this._identity = identity;
         this._streams = {};
         this._backend = new SignalRBackend(identity, {
             OnMessageReceived: this.onMessageReceived
@@ -29,17 +31,18 @@ export default class StreamsManager {
 
         var stream = this._streams[conversationId];
         if (!stream) {
-            stream = new ConversationStream(conversationId);
+            stream = new ConversationStream(conversationId, this._identity.Id);
             this._streams[conversationId] = stream;
         }
 
+        stream.connectToServer();
         return stream;
     }
 
     private onMessageReceived(message: JokerMessage) {
         var targetStream = this._streams[message.ConversationId];
         if (!targetStream) {
-            targetStream = new ConversationStream(message.ConversationId);
+            targetStream = new ConversationStream(message.ConversationId, this._identity.Id);
             this._streams[message.ConversationId] = targetStream;
 
             console.warn("Received a message for an unknown stream - created stream implicitly");
