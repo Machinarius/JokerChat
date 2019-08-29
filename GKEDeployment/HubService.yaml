@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-service
+spec:
+  selector:
+    app: hubapp
+  ports:
+    - name: hubapp-http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort

@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: endpoint
+spec:
+ replicas: 2
+ template:
+   metadata:
+     labels:
+       app: endpointapp
+   spec:
+     containers:
+       - name: endpointapp
+         image: gcr.io/jokerchat/jokerchat.endpoint:0.1
+         ports:
+           - containerPort: 80
+         env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:80"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Kubernetes"

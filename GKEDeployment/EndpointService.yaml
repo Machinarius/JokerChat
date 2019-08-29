@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: endpoint-service
+spec:
+  selector:
+    app: endpointapp
+  ports:
+    - name: endpoint-http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort

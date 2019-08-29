@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: client
+spec:
+ replicas: 2
+ template:
+   metadata:
+     labels:
+       app: clientapp
+   spec:
+     containers:
+       - name: clientapp
+         image: gcr.io/jokerchat/jokerchat.client-k8s:0.2
+         ports:
+           - containerPort: 80
