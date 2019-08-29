@@ -18,7 +18,7 @@ namespace JokerChat.Endpoint.ClientCommands {
     public async Task PerformAnnouncement(RegistrationToken token) {
       var config = _configuration.Value;
       var registrationData = new RegistrationData() {
-        EndpointPort = config.SelfHttpPort,
+        EndpointPort = config.OwnHttpPort,
         RegistrationDate = DateTime.UtcNow,
         SessionId = token.SessionId,
         UserId = token.UserId,

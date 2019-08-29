@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace JokerChat.Endpoint {
   public class Startup {
@@ -16,19 +18,24 @@ namespace JokerChat.Endpoint {
 
     public IConfiguration Configuration { get; }
 
+    private string[] _allowedCORSHosts;
+
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
       services.AddControllersWithViews();
       services.AddSignalR();
       services.AddSingleton<IUserIdProvider, JokerUserIdProvider>();
 
+      services.Configure<EndpointConfiguration>(Configuration.GetSection("EndpointConfiguration"));
+
+      services.AddJokerHubCommandServices(); 
+
+      var provider = services.BuildServiceProvider();
+      var configuration = provider.GetService<IOptions<EndpointConfiguration>>().Value;
+      _allowedCORSHosts = configuration.AllowedCORSOrigins.ToArray();
       services.AddCors(options => {
         options.AddDefaultPolicy(BuildCORSPolicy);
       });
-
-      services.Configure<EndpointConfiguration>(Configuration.GetSection("EndpointConfiguration"));
-
-      services.AddJokerHubCommandServices();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +67,7 @@ namespace JokerChat.Endpoint {
     }
 
     private void BuildCORSPolicy(CorsPolicyBuilder builder) {
-      builder.WithOrigins("http://localhost:3000")
+      builder.WithOrigins(_allowedCORSHosts)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();

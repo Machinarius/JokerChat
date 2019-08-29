@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace JokerChat.HubServer {
   public class Startup {
@@ -20,11 +22,7 @@ namespace JokerChat.HubServer {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
       services.AddControllersWithViews();
-      services.AddCors(options => options.AddDefaultPolicy(builder =>
-        builder.WithOrigins("http://localhost:3000")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials()));
+      
 
       services.AddHttpContextAccessor();
       services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -34,6 +32,15 @@ namespace JokerChat.HubServer {
       services.AddJokerSubscriptionServices();
 
       services.Configure<ServicesConfiguration>(Configuration.GetSection("Services"));
+      
+      var provider = services.BuildServiceProvider();
+      var configuration = provider.GetService<IOptions<ServicesConfiguration>>().Value;
+      var allowedCorsHosts = configuration.AllowedCORSOrigins.ToArray();
+      services.AddCors(options => options.AddDefaultPolicy(builder =>
+        builder.WithOrigins(allowedCorsHosts)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
