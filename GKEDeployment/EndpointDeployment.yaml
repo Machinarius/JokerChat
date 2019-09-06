@@ -11,7 +11,7 @@ spec:
    spec:
      containers:
        - name: endpointapp
-         image: gcr.io/jokerchat/jokerchat.endpoint:0.1
+         image: gcr.io/jokerchat/jokerchat.endpoint:0.11
          ports:
            - containerPort: 80
          env:
