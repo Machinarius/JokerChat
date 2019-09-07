@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using JokerChat.Common;
 using JokerChat.Endpoint.HubCommands;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JokerChat.Endpoint.Controllers {
+  [EnableCors]
   public class MessagesController : Controller {
     private readonly IHubMessageForwarder _messageForwarder;
 

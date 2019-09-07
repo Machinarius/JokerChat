@@ -1,11 +1,13 @@
 ﻿using JokerChat.Common;
 using JokerChat.HubServer.Registrations;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace JokerChat.HubServer.Controllers {
+  [EnableCors]
   public class RegistrationsController : Controller {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IRegistrationsManager _registrationsManager;
