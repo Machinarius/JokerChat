@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: endpoint-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: endpoint-ingress
+    kubernetes.io/ingress.global-static-ip-name: "endpoint-ingress"
 spec:
   backend:
     serviceName: endpoint-service
