@@ -13,6 +13,8 @@ using System.Linq;
 
 namespace JokerChat.HubServer {
   public class Startup {
+    private const string CORSPolicyName = "JokerCORSPolicy";
+
     public Startup(IConfiguration configuration) {
       Configuration = configuration;
     }
@@ -36,7 +38,7 @@ namespace JokerChat.HubServer {
       var provider = services.BuildServiceProvider();
       var configuration = provider.GetService<IOptions<ServicesConfiguration>>().Value;
       var allowedCorsHosts = configuration.AllowedCORSOrigins.ToArray();
-      services.AddCors(options => options.AddDefaultPolicy(builder =>
+      services.AddCors(options => options.AddPolicy(CORSPolicyName, builder =>
         builder.WithOrigins(allowedCorsHosts)
             .AllowAnyMethod()
             .AllowAnyHeader()
@@ -51,14 +53,12 @@ namespace JokerChat.HubServer {
         app.UseExceptionHandler("/Home/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
+        app.UseHttpsRedirection();
       }
-      app.UseCors();
-      app.UseHttpsRedirection();
-      app.UseStaticFiles();
 
       app.UseRouting();
-
-      app.UseAuthorization();
+      app.UseStaticFiles();
+      app.UseCors(CORSPolicyName);
 
       app.UseEndpoints(endpoints => {
         endpoints.MapControllerRoute(

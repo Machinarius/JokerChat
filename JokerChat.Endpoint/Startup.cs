@@ -12,6 +12,8 @@ using System.Linq;
 
 namespace JokerChat.Endpoint {
   public class Startup {
+    private const string CORSPolicyName = "JokerCORSPolicy";
+
     public Startup(IConfiguration configuration) {
       Configuration = configuration;
     }
@@ -34,7 +36,11 @@ namespace JokerChat.Endpoint {
       var configuration = provider.GetService<IOptions<EndpointConfiguration>>().Value;
       _allowedCORSHosts = configuration.AllowedCORSOrigins.ToArray();
       services.AddCors(options => {
-        options.AddDefaultPolicy(BuildCORSPolicy);
+        options.AddPolicy(CORSPolicyName, builder => 
+          builder.WithOrigins(_allowedCORSHosts)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
       });
     }
 
@@ -49,28 +55,18 @@ namespace JokerChat.Endpoint {
         app.UseHttpsRedirection();
       }
 
-      app.UseCors();
-      app.UseStaticFiles();
       app.UseRouting();
+      app.UseStaticFiles();
+      app.UseCors(CORSPolicyName);
 
       app.UseEndpoints(endpoints => {
         endpoints
-          .MapHub<JokerSignalRHub>("/jokerhub")
-          .RequireCors(BuildCORSPolicy);
-      });
+          .MapHub<JokerSignalRHub>("/jokerhub");
 
-      app.UseEndpoints(endpoints => {
         endpoints.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
       });
-    }
-
-    private void BuildCORSPolicy(CorsPolicyBuilder builder) {
-      builder.WithOrigins(_allowedCORSHosts)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
     }
   }
 }
