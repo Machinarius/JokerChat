@@ -11,7 +11,7 @@ spec:
    spec:
      containers:
        - name: hubapp
-         image: gcr.io/jokerchat/jokerchat.hub:0.13
+         image: gcr.io/jokerchat/jokerchat.hub:0.15
          ports:
            - containerPort: 80
          env:

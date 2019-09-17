@@ -56,9 +56,9 @@ namespace JokerChat.HubServer {
         app.UseHttpsRedirection();
       }
 
+      app.UseCors(CORSPolicyName);
       app.UseRouting();
       app.UseStaticFiles();
-      app.UseCors(CORSPolicyName);
 
       app.UseEndpoints(endpoints => {
         endpoints.MapControllerRoute(

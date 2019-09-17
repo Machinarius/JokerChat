@@ -1,7 +1,6 @@
 using JokerChat.Endpoint.ClientCommands;
 using JokerChat.Endpoint.HubCommands;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
@@ -30,13 +29,13 @@ namespace JokerChat.Endpoint {
 
       services.Configure<EndpointConfiguration>(Configuration.GetSection("EndpointConfiguration"));
 
-      services.AddJokerHubCommandServices(); 
+      services.AddJokerHubCommandServices();
 
       var provider = services.BuildServiceProvider();
       var configuration = provider.GetService<IOptions<EndpointConfiguration>>().Value;
       _allowedCORSHosts = configuration.AllowedCORSOrigins.ToArray();
       services.AddCors(options => {
-        options.AddPolicy(CORSPolicyName, builder => 
+        options.AddPolicy(CORSPolicyName, builder =>
           builder.WithOrigins(_allowedCORSHosts)
             .AllowAnyMethod()
             .AllowAnyHeader()
@@ -55,9 +54,9 @@ namespace JokerChat.Endpoint {
         app.UseHttpsRedirection();
       }
 
+      app.UseCors(CORSPolicyName);
       app.UseRouting();
       app.UseStaticFiles();
-      app.UseCors(CORSPolicyName);
 
       app.UseEndpoints(endpoints => {
         endpoints
